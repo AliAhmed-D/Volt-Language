@@ -1,6 +1,6 @@
 # =================================================================
-#  Volt Language Core Engine - Open Source Edition ⚡
-#  Lead Architect: Ali Ahmed Abdul Hussein Zarki (ialidev)
+#  Volt Language Core Engine - Standalone Android Edition ⚡
+#  Lead Architect: Ali Ahmed Abdul Hussein Zarki
 # =================================================================
 
 import re
@@ -29,11 +29,10 @@ class VoltCompiler:
     def compile(self):
         body_lines = []
         
-        # دالة السيرفر المدمجة التي سيتم توليدها بـ C++ خلف الكواليس
         server_cpp_function = """
 void start_server(int port) {
-    std::cout << "[Volt Server] Initializing Local Microservice on Port " << port << "..." << std::endl;
-    std::cout << "[Volt Server] Server successfully running! Ready for data packets." << std::endl;
+    std::cout << "\\n[Volt Server] Initializing Local Microservice on Port " << port << "..." << std::endl;
+    std::cout << "[Volt Server] Server successfully running! Ready for data packets.\\n" << std::endl;
 }
 """
 
@@ -44,34 +43,34 @@ void start_server(int port) {
             if not stripped_line or stripped_line.startswith('#'):
                 continue
             
-            # تتبع الخروج من بلوك الـ if بناءً على المسافات
+            # إدارة الخروج الذكي من بلوك الشرط
             if self.in_if_block and not line.startswith('    '):
                 body_lines.append("    }")
                 self.in_if_block = False
 
             current_command = stripped_line
 
-            # 1. تحليل الشروط if
+            # 1. تحليل الشروط
             if current_command.startswith('if ') and current_command.endswith(':'):
                 condition = current_command[3:-1].strip()
                 body_lines.append(f"    if ({condition}) {{")
                 self.in_if_block = True
                 continue
             
-            # 2. تحليل التفرع else:
+            # 2. تحليل وتفريغ else
             elif current_command == 'else:':
                 body_lines.append("    else {")
                 self.in_if_block = True
                 continue
 
-            # 3. دالة السيرفر المدمجة الخاصة بـ Volt
+            # 3. دالة السيرفر المدمجة لـ Volt
             elif current_command.startswith('start_server '):
                 port = current_command[13:].strip()
                 self.has_server = True
                 indent = "        " if self.in_if_block else "    "
                 body_lines.append(f"{indent}start_server({port});")
 
-            # 4. تحليل المتغيرات والتعرف الذكي على الأنواع
+            # 4. تحليل المتغيرات والتعرف على الأنواع
             elif '=' in current_command:
                 parts = current_command.split('=', 1)
                 var_name = parts[0].strip()
@@ -100,7 +99,7 @@ void start_server(int port) {
         if self.in_if_block:
             body_lines.append("    }")
 
-        # تجميع الهيكل النهائي المترجم لـ C++
+        # صياغة ملف الـ C++ المترجم
         self.cpp_lines.append("#include <iostream>")
         if self.has_string:
             self.cpp_lines.append("#include <string>")
@@ -131,43 +130,33 @@ def run_volt_ecosystem(source_code):
     cpp_filename = "compiled_volt_core.cpp"
     with open(cpp_filename, "w", encoding='utf-8') as f:
         f.write(cpp_output)
-    print(f"[Volt Core] Intermediate C++ code generated and saved to '{cpp_filename}'.")
+    print(f"[Volt Core] Intermediate C++ code generated successfully.")
 
-    executable_name = "volt_app.exe" if os.name == 'nt' else "./volt_app"
-    
-    # اختيار المترجم تلقائياً (clang++ للأندرويد وتيرموكس، أو g++ للحاسبة)
-    sys_compiler = "clang++" if not os.name == 'nt' and os.path.exists("/data/data/com.termux") else "g++"
-    print(f"[Volt Core] Invoking system compiler ({sys_compiler}) to build native machine code...")
+    print(f"[Volt Core] Invoking Android system compiler (clang++) to build native machine code...")
     
     try:
-        subprocess.run([sys_compiler, cpp_filename, "-o", "volt_app"], check=True)
-        print(f"\n[Volt Success] Hardwired binary generated successfully: '{executable_name}'")
+        # استدعاء مترجم الأندرويد لإنتاج الباينري الخالص
+        subprocess.run(["clang++", cpp_filename, "-o", "volt_app"], check=True)
+        print(f"\n[Volt Success] Hardwired binary generated successfully: './volt_app'")
         print("-" * 50)
         print("YOU CAN NOW RUN YOUR HIGH-PERFORMANCE VOLT APP!")
         print("-" * 50)
     except FileNotFoundError:
-        print("\n[Volt Note] Intermediate C++ code generated perfectly!")
-        print(f"[System Advisory] Please ensure compiler '{sys_compiler}' is installed on your device.")
+        print("\n[Volt Error] Compiler 'clang++' not accessible.")
 
 
 # =================================================================
-#  برنامج الاختبار المدمج تلقائياً داخل المحرك
+#  برنامجك الرسمي لـ Volt مكتوب ومحقون هنا بالأسفل بشكل سليم ومضمون
 # =================================================================
 if __name__ == "__main__":
     
     volt_program = """
-    # كود تجريبي لاختبار لغة فولت ⚡
-    print "--- Welcome to Volt Environment ---"
-    
-    traffic_load = 45.8
-    print "Current Traffic Load on Nodes:"
-    print traffic_load
-    
-    if traffic_load > 40.0:
-        print "Status: Threat level high. Deploying Volt local microservice..."
-        start_server 8080
-    else:
-        print "Status: Secure operation mode."
-    """
+name = "Ali Zarki"
+print name
+
+if 10 > 5:
+    print "Deploying high-performance server..."
+    start_server 8080
+"""
 
     run_volt_ecosystem(volt_program)
