@@ -1,0 +1,7 @@
+# برنامج الأول بلغة فولت ⚡
+name = "Ali Ahmed Abdul Hussein Zarki "
+print name
+
+if 10 > 5:
+    print "Deploying high-performance server..."
+    start_server 8080
