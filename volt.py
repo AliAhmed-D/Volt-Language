@@ -1,5 +1,5 @@
 # =================================================================
-#  Volt Language Core Engine - Ultimate Loop Edition ⚡
+#  Volt Language Core Engine - Ultimate Loop & Input Edition ⚡
 #  Lead Architect: Ali Ahmed Abdul Hussein Zarki (ialidev)
 # =================================================================
 
@@ -23,7 +23,8 @@ class VoltCompiler:
         elif re.match(r"^\d+$", value):
             return "int"
         elif re.match(r"^\d+\.\d+$", value):
-            return "float"
+            self.has_string = False  # تأكيد أنها رقم عشري وليست نصاً
+            return "double"
         return "auto"
 
     def compile(self):
@@ -63,10 +64,9 @@ void start_server(int port) {
                 self.in_block = True
                 continue
 
-            # 3. تحليل ميزة الحلقات التكرارية الجديدة loop
+            # 3. تحليل ميزة الحلقات التكرارية loop
             elif current_command.startswith('loop ') and current_command.endswith(':'):
                 times = current_command[5:-1].strip()
-                # توليد حلقة C++ باستخدام متغير فريد بناءً على رقم السطر لمنع التداخل
                 body_lines.append(f"    for (int _i{i} = 0; _i{i} < {times}; ++_i{i}) {{")
                 self.in_block = True
                 continue
@@ -78,7 +78,25 @@ void start_server(int port) {
                 indent = "        " if self.in_block else "    "
                 body_lines.append(f"{indent}start_server({port});")
 
-            # 5. تحليل المتغيرات والمدخلات
+            # 5. الميزة الجديدة: تحليل أمر الإدخال الذكي مع رسالة (input "Msg": var)
+            elif current_command.startswith('input ') and ':' in current_command:
+                indent = "        " if self.in_block else "    "
+                self.has_string = True
+                
+                # تفكيك الأمر لاستخراج الرسالة واسم المتغير
+                parts = current_command[6:].split(':', 1)
+                msg_content = parts[0].strip()
+                var_name = parts[1].strip()
+                
+                if re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", var_name):
+                    body_lines.append(f"{indent}cout << {msg_content};")
+                    body_lines.append(f"{indent}string {var_name};")
+                    body_lines.append(f"{indent}cin >> {var_name};")
+                else:
+                    print(f"Error: Invalid variable name '{var_name}' in input statement.")
+                    return None
+
+            # 6. تحليل المتغيرات والمدخلات الافتراضية والتعرف الذكي على الأنظمة
             elif '=' in current_command:
                 parts = current_command.split('=', 1)
                 var_name = parts[0].strip()
@@ -92,13 +110,14 @@ void start_server(int port) {
                         body_lines.append(f"{indent}string {var_name};")
                         body_lines.append(f"{indent}cin >> {var_name};")
                     else:
+                        # تفعيل دالة كشف الأنواع الذكية للـ float والـ int والنصوص
                         var_type = self.detect_type(var_value)
                         body_lines.append(f"{indent}{var_type} {var_name} = {var_value};")
                 else:
                     print(f"Error: Invalid variable name '{var_name}'")
                     return None
 
-            # 6. تحليل أمر الطباعة
+            # 7. تحليل أمر الطباعة
             elif current_command.startswith('print '):
                 content = current_command[6:].strip()
                 indent = "        " if self.in_block else "    "
