@@ -1,6 +1,6 @@
 # =================================================================
 #  Volt Language Core Engine - Ultimate Loop & Input Edition ⚡
-#  Lead Architect: Ali Ahmed Abdul Hussein Zarki (ialidev)
+#  Lead Architect: Ali Ahmed Abdul Hussein Zarki Al-Hamrani
 # =================================================================
 
 import re
