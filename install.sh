@@ -14,13 +14,13 @@ if [ -d "Volt" ]; then
     echo "Volt directory already exists. Updating..."
     cd Volt && git pull
 else
-    git clone https://github.com/ialidev/Volt.git
+    git clone https://github.com/AliAhmed-D/Volt.git
     cd Volt
 fi
 
 # 3. طباعة رسالة النجاح وتجهيز البيئة
 echo "================================================="
 echo "⚡ Volt Language Installed Successfully! ⚡"
-echo "Architect: Ali Ahmed (ialidev)"
+echo "Architect: Ali Ahmed Abdul Hussein Zarki"
 echo "To run your first code, type: python volt.py"
 echo "================================================="
