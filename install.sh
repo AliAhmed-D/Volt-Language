@@ -10,12 +10,12 @@ pkg update -y && pkg install python clang git -y
 # 2. إنشاء مجلد العمل والانتقال إليه
 echo "[2/3] Setting up workspace..."
 cd $HOME
-if [ -d "Volt" ]; then
-    echo "Volt directory already exists. Updating..."
-    cd Volt && git pull
+if [ -d "Volt-Language" ]; then
+    echo "Volt-Language directory already exists. Updating..."
+    cd Volt-Language && git pull
 else
-    git clone https://github.com/AliAhmed-D/Volt.git
-    cd Volt
+    git clone https://github.com/AliAhmed-D/Volt-Language.git
+    cd Volt-Language
 fi
 
 # 3. طباعة رسالة النجاح وتجهيز البيئة
