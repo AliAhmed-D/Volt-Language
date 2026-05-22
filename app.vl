@@ -1,7 +1,54 @@
-# برنامج الأول بلغة فولت ⚡
-name = "Ali Ahmed Abdul Hussein Zarki "
-print name
 
-if 10 > 5:
-    print "Deploying high-performance server..."
-    start_server 8080
+use math
+use sys
+
+var nums = {-583746192834, 293847293847, -193847293847, 583746192834, -293847293847, 193847293847}
+
+out "⚡ [volt Engine] Checking subset sum inside app.vl..."
+
+num size = 6
+num found_zero = 0
+
+lop 1000:
+    num current_sum = 0
+    num has_element = 0
+    
+    var r1 = sys_rnd(2)
+    ifs r1 == 1:
+        current_sum = current_sum + -583746192834
+        has_element = 1
+        
+    var r2 = sys_rnd(2)
+    ifs r2 == 1:
+        current_sum = current_sum + 293847293847
+        has_element = 1
+        
+    var r3 = sys_rnd(2)
+    ifs r3 == 1:
+        current_sum = current_sum + -193847293847
+        has_element = 1
+        
+    var r4 = sys_rnd(2)
+    ifs r4 == 1:
+        current_sum = current_sum + 583746192834
+        has_element = 1
+        
+    var r5 = sys_rnd(2)
+    ifs r5 == 1:
+        current_sum = current_sum + -293847293847
+        has_element = 1
+        
+    var r6 = sys_rnd(2)
+    ifs r6 == 1:
+        current_sum = current_sum + 193847293847
+        has_element = 1
+
+    var check_abs = abs_val(current_sum)
+    ifs check_abs == 0:
+        ifs has_element == 1:
+            found_zero = 1
+
+ifs found_zero == 1:
+    out "Success! Full Language found a subset that sums to zero!"
+els:
+    out "Finished 1000 generations without perfect zero."
