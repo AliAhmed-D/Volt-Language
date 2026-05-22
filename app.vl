@@ -1,12 +1,8 @@
-
 use math
 use sys
 
-var nums = {-583746192834, 293847293847, -193847293847, 583746192834, -293847293847, 193847293847}
+out "Checking subset sum inside app.vl..."
 
-out "⚡ [volt Engine] Checking subset sum inside app.vl..."
-
-num size = 6
 num found_zero = 0
 
 lop 1000:
@@ -15,7 +11,7 @@ lop 1000:
     
     var r1 = sys_rnd(2)
     ifs r1 == 1:
-        current_sum = current_sum + -583746192834
+        current_sum = current_sum - 583746192834
         has_element = 1
         
     var r2 = sys_rnd(2)
@@ -25,7 +21,7 @@ lop 1000:
         
     var r3 = sys_rnd(2)
     ifs r3 == 1:
-        current_sum = current_sum + -193847293847
+        current_sum = current_sum - 193847293847
         has_element = 1
         
     var r4 = sys_rnd(2)
@@ -35,7 +31,7 @@ lop 1000:
         
     var r5 = sys_rnd(2)
     ifs r5 == 1:
-        current_sum = current_sum + -293847293847
+        current_sum = current_sum - 293847293847
         has_element = 1
         
     var r6 = sys_rnd(2)
@@ -49,6 +45,6 @@ lop 1000:
             found_zero = 1
 
 ifs found_zero == 1:
-    out "Success! Full Language found a subset that sums to zero!"
+    out "Success! Volt found a subset that sums to zero!"
 els:
     out "Finished 1000 generations without perfect zero."
