@@ -1,7 +1,7 @@
 # =================================================================
-#  Full Language Core Engine ⚡ (Optimized & Stable)
+#  volt Language Core Engine ⚡ (Optimized & Stable)
 #  Lead Architect: Ali Ahmed Abdul Hussein Zarki Al-Hamrani
-#  v3.0 — Full Backend Language Edition
+#  v3.0 — volt Backend Language Edition
 # =================================================================
 
 import re
